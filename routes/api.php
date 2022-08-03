@@ -1,10 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\Brand\BrandController;
-use App\Http\Controllers\Api\Category\CategoryController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\v1\Banner\BannerSliderController;
+use App\Http\Controllers\Api\v1\Brand\BrandController;
+use App\Http\Controllers\Api\v1\Category\CategoryController;
+use App\Http\Controllers\Api\v1\Product\ProductController;
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\Api\Product\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +34,10 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['prefix'=>'brand'],function () {
         Route::get('getBrands',[BrandController::class,'getBrands']);
+    });
+
+    Route::group(['prefix'=>'banner'],function () {
+        Route::get('getHomeBannerSlider',[BannerSliderController::class,'getHomeBannerSlider']);
     });
 });
 

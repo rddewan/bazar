@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\BannerSlider;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -18,6 +19,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             CategorySeeder::class,
             BrandSeeder::class,
+            BannerSeeder::class,
+            BannerSliderSeeder::class,
         ]);
     }
 }
