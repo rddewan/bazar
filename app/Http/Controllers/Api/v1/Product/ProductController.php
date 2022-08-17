@@ -32,6 +32,25 @@ class ProductController extends Controller
         return Response::json($result, ResponseAlias::HTTP_OK);
     }
 
+    // search product
+    public function searchProduct(Request $request): JsonResponse
+    {
+        $query = $request->get('query');
+
+        if ($query) {
+            $data = Product::query()
+                ->where('sku','LIKE','%'.$query.'%')
+                ->orWhere('name','LIKE','%'.$query.'%')
+                ->orderBy('id','DESC')
+                ->paginate(10);
+
+            return Response::json($data,ResponseAlias::HTTP_OK);
+        }
+
+        return Response::json(['message'=> 'query param missing'],ResponseAlias::HTTP_BAD_REQUEST);
+
+    }
+
     //Get the list of paginated thrashed product
     function getTrashedProducts(Request $request): JsonResponse
     {
