@@ -23,7 +23,7 @@ class CategoryFactory extends Factory
         $this->faker->addProvider(new LoremSpaceProvider($this->faker));
 
         $thumbnail = $this->faker->picsum(storage_path('app/public/category/thumbnails'),100,100,false);
-        $product = $this->faker->picsum(storage_path('app/public/category/images'),500,500,false);
+        $product = $this->faker->picsum(storage_path('app/public/category/images'),1400,480,false);
         $url_thumbnail = Storage::url('category/thumbnails/'.$thumbnail);
         $url_product = Storage::url('category/images/'.$product);
 

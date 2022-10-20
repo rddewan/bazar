@@ -25,7 +25,7 @@ class ProductFactory extends Factory
         $this->faker->addProvider(new LoremSpaceProvider($this->faker));
 
         $thumbnail = $this->faker->picsum(storage_path('app/public/product/thumbnails'),100,100,false);
-        $image = $this->faker->picsum(storage_path('app/public/product/images'),500,500,false);
+        $image = $this->faker->picsum(storage_path('app/public/product/images'),1400,480,false);
         $url_thumbnail = Storage::url('product/thumbnails/'.$thumbnail);
         $url_product = Storage::url('product/images/'.$image);
 

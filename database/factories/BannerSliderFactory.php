@@ -23,7 +23,7 @@ class BannerSliderFactory extends Factory
         $this->faker->addProvider(new LoremSpaceProvider($this->faker));
 
 
-        $image = $this->faker->picsum(storage_path('app/public/banner/images'),500,500,false);
+        $image = $this->faker->picsum(storage_path('app/public/banner/images'),1400,480,false);
         $banner = Storage::url('banner/images/'.$image);
 
         return [

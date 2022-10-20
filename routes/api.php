@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\v1\Auth\LoginController;
+use App\Http\Controllers\Api\v1\Auth\SignUpController;
 use App\Http\Controllers\Api\v1\Banner\BannerSliderController;
 use App\Http\Controllers\Api\v1\Brand\BrandController;
 use App\Http\Controllers\Api\v1\Category\CategoryController;
@@ -18,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['prefix' => 'v1'], function () {
+
+    Route::post('register',[SignUpController::class,'register']);
+    Route::post('login',[LoginController::class,'login']);
+
     Route::group(['prefix' => 'product'], function () {
         Route::get('getProducts',[ProductController::class,'getProducts']);
         Route::get('search',[ProductController::class,'searchProduct']);
