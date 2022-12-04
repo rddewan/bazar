@@ -26,8 +26,14 @@ class ProductController extends Controller
             );
         }
 
-        $result = Product::orderBy('id','DESC')
+        $result = DB::table('products')
+            ->join('prices','products.id','=','prices.product_id')
+            ->orderBy('products.id')
+            ->select('products.*', 'prices.price','prices.discount')
             ->paginate($perPage,['*'],'product',$pageNumber);
+
+//        Product::orderBy('id','DESC')
+//            ->paginate($perPage,['*'],'product',$pageNumber);
 
         return Response::json($result, ResponseAlias::HTTP_OK);
     }

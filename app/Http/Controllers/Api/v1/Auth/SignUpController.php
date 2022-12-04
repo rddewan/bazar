@@ -22,17 +22,18 @@ class SignUpController extends Controller
         $validateData = $request->validate([
             'name' => 'required|max:25',
             'email' => 'email|required|unique:users',
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed',
+            'phone' => 'required'
 
         ]);
 
         //create user
         $user = new User(
             [
-                'name' => $request->name,
-                'email' => $request->email,
-                'empId' => $request->empId,
-                'password' => bcrypt($request->password),
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
+                'password' => bcrypt($request->get('password')),
+                'phone' => $request->get('phone'),
             ]
         );
 

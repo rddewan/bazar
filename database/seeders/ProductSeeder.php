@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Price;
 use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,6 +17,12 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        Product::factory()->times(100)->create();
+        Product::factory()->times(100)
+            ->create()
+            ->each(function ($product) {
+                Price::factory()
+                    ->create(['product_id' =>$product->id,]);
+
+            });
     }
 }
