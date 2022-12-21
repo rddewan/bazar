@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('prices', function (Blueprint $table) {
+        Schema::create('featured_products', function (Blueprint $table) {
             $table->id();
             $table->integer('product_id');
-            $table->double('price',10,0);
-            $table->string('currency',3)->default('USD');
-            $table->double('discount',10,2);
             $table->dateTimeTz('from_date');
             $table->dateTimeTz('to_date');
             $table->softDeletes();
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prices');
+        Schema::dropIfExists('featured_products');
     }
 };

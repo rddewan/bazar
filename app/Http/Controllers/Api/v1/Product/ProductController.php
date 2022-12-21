@@ -28,8 +28,17 @@ class ProductController extends Controller
 
         $result = DB::table('products')
             ->join('prices','products.id','=','prices.product_id')
+            ->join('inventories','products.id','=','inventories.product_id')
+            ->join('categories','products.category_id','=','categories.id')
+            ->join('brands','products.brand_id','=','brands.id')
             ->orderBy('products.id')
-            ->select('products.*', 'prices.price','prices.discount')
+            ->select(
+                'products.*',
+                'prices.price','prices.discount','prices.currency',
+                'inventories.qty',
+                'brands.name AS brand',
+                'categories.name AS category',
+            )
             ->paginate($perPage,['*'],'product',$pageNumber);
 
 //        Product::orderBy('id','DESC')
@@ -80,7 +89,20 @@ class ProductController extends Controller
     function getProduct($id): JsonResponse
     {
 
-        $result = DB::table('products')->where('id','=',$id)->first();
+        $result = DB::table('products')
+            ->join('prices','products.id','=','prices.product_id')
+            ->join('inventories','products.id','=','inventories.product_id')
+            ->join('categories','products.category_id','=','categories.id')
+            ->join('brands','products.brand_id','=','brands.id')
+            ->orderBy('products.id')
+            ->select(
+                'products.*',
+                'prices.price','prices.discount','prices.currency',
+                'inventories.qty',
+                'brands.name AS brand',
+                'categories.name AS category',
+            )
+            ->first();
 
         return Response::json($result, ResponseAlias::HTTP_OK);
     }

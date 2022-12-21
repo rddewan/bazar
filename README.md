@@ -2,6 +2,7 @@
 ### API Project for  eCommerce app
 
 ## Useful Command
+-  php artisan make:model Inventory -m
 - php artisan make:controller ProductController
 - php artisan make:seeder ProductSeeder
 - php artisan db:seed

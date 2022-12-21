@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Inventory;
 use App\Models\Price;
 use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -21,6 +22,9 @@ class ProductSeeder extends Seeder
             ->create()
             ->each(function ($product) {
                 Price::factory()
+                    ->create(['product_id' =>$product->id,]);
+
+                Inventory::factory()
                     ->create(['product_id' =>$product->id,]);
 
             });

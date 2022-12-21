@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\v1\Auth\SignUpController;
 use App\Http\Controllers\Api\v1\Banner\BannerSliderController;
 use App\Http\Controllers\Api\v1\Brand\BrandController;
 use App\Http\Controllers\Api\v1\Category\CategoryController;
+use App\Http\Controllers\Api\v1\Product\FeaturedProductController;
 use App\Http\Controllers\Api\v1\Product\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,6 +34,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::delete('softDeleteProduct/{id}',[ProductController::class,'softDeleteProduct']);
         Route::post('restoreProduct',[ProductController::class,'restoreProduct']);
         Route::delete('destroy/{id}',[ProductController::class,'destroy']);
+
+        Route::get('featuredProduct',[FeaturedProductController::class,'getFeaturedProducts']);
     });
 
     Route::group(['prefix' => 'category'], function () {
