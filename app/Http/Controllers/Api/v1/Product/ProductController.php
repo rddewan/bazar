@@ -89,12 +89,12 @@ class ProductController extends Controller
     function getProduct($id): JsonResponse
     {
 
-        $result = DB::table('products')
+        $product = DB::table('products')
+            ->where('products.id','=',$id)
             ->join('prices','products.id','=','prices.product_id')
             ->join('inventories','products.id','=','inventories.product_id')
             ->join('categories','products.category_id','=','categories.id')
             ->join('brands','products.brand_id','=','brands.id')
-            ->join('product_images','products.id','=','product_images.product_id')
             ->orderBy('products.id')
             ->select(
                 'products.*',
@@ -102,11 +102,18 @@ class ProductController extends Controller
                 'inventories.qty',
                 'brands.name AS brand',
                 'categories.name AS category',
-                'product_images.image AS product_images'
             )
             ->first();
 
-        return Response::json($result, ResponseAlias::HTTP_OK);
+        $images = DB::table('product_images')
+            ->select('image')
+            ->where('product_id','=',$id)
+            ->get();
+
+        return Response::json([
+            'product' => $product,
+            'images' => $images
+        ], ResponseAlias::HTTP_OK);
     }
 
     //Update product
