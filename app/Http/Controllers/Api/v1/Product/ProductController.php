@@ -94,6 +94,7 @@ class ProductController extends Controller
             ->join('inventories','products.id','=','inventories.product_id')
             ->join('categories','products.category_id','=','categories.id')
             ->join('brands','products.brand_id','=','brands.id')
+            ->join('product_images','products.id','=','product_images.product_id')
             ->orderBy('products.id')
             ->select(
                 'products.*',
@@ -101,6 +102,7 @@ class ProductController extends Controller
                 'inventories.qty',
                 'brands.name AS brand',
                 'categories.name AS category',
+                'product_images.image AS product_images'
             )
             ->first();
 
