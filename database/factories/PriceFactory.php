@@ -19,7 +19,7 @@ class PriceFactory extends Factory
         return [
             'price' =>$this->faker->randomFloat(2,5.20,100),
             'currency' => 'USD',
-            'discount' =>$this->faker->numberBetween(2,10),
+            'discount' =>$this->faker->numberBetween(0,10),
             'from_date' =>$this->faker->dateTime,
             'to_date' =>$this->faker->dateTime
         ];
