@@ -98,9 +98,9 @@ class ProductController extends Controller
             ->orderBy('products.id')
             ->select(
                 'products.*',
-                'CAST(prices.price AS DECIMAL(10,2))',
-                'CAST(prices.discount AS DECIMAL(10,2))',
-                'CAST(prices.currency AS DECIMAL(10,2))',
+                'CONVERT(prices.price) AS DECIMAL(10,2)',
+                'CONVERT(prices.discount AS DECIMAL(10,2))',
+                'CONVERT(prices.currency AS DECIMAL(10,2))',
                 'inventories.qty',
                 'brands.name AS brand',
                 'categories.name AS category',
