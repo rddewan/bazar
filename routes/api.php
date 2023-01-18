@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\v1\Auth\LoginController;
 use App\Http\Controllers\Api\v1\Auth\SignUpController;
 use App\Http\Controllers\Api\v1\Banner\BannerSliderController;
 use App\Http\Controllers\Api\v1\Brand\BrandController;
+use App\Http\Controllers\Api\v1\Cart\CartController;
 use App\Http\Controllers\Api\v1\Category\CategoryController;
 use App\Http\Controllers\Api\v1\Product\FeaturedProductController;
 use App\Http\Controllers\Api\v1\Product\ProductController;
@@ -48,6 +49,13 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::group(['prefix'=>'banner'],function () {
         Route::get('getHomeBannerSlider',[BannerSliderController::class,'getHomeBannerSlider']);
+    });
+
+    Route::group(['prefix'=>'cart'],function () {
+        Route::get('getUserCart/{id}',[CartController::class,'getUserCart']);
+        Route::post('addToCart',[CartController::class,'addToCart']);
+        Route::put('update',[CartController::class,'update']);
+        Route::delete('delete',[CartController::class,'delete']);
     });
 });
 
