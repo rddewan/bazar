@@ -16,7 +16,13 @@ class CartController extends Controller
     function getUserCart($id): JsonResponse {
         $data = DB::table('carts')
             ->where('user_id',$id)
+            ->join('products','carts.product_id','=','products.id')
+            ->select(
+                'carts.*',
+                'products.thumbnail',
+            )
             ->get();
+
 
         return Response::json($data, ResponseAlias::HTTP_OK);
     }
