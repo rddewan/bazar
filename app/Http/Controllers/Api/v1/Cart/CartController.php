@@ -43,6 +43,11 @@ class CartController extends Controller
 
         $data = DB::table('carts')
             ->where('id',$id)
+            ->join('products','carts.product_id','=','products.id')
+            ->select(
+                'carts.*',
+                'products.thumbnail',
+            )
             ->first();
 
         return Response::json($data, ResponseAlias::HTTP_CREATED);
@@ -64,6 +69,11 @@ class CartController extends Controller
 
         $data = DB::table('carts')
             ->where('id',$request->get('id'))
+            ->join('products','carts.product_id','=','products.id')
+            ->select(
+                'carts.*',
+                'products.thumbnail',
+            )
             ->first();
 
         return Response::json($data, ResponseAlias::HTTP_OK);
