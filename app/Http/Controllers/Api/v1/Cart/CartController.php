@@ -44,9 +44,11 @@ class CartController extends Controller
         $data = DB::table('carts')
             ->where('carts.id',$id)
             ->join('products','carts.product_id','=','products.id')
+            ->join('prices','products.id','=','prices.product_id')
             ->select(
                 'carts.*',
                 'products.thumbnail',
+                'prices.currency',
             )
             ->first();
 
@@ -70,9 +72,11 @@ class CartController extends Controller
         $data = DB::table('carts')
             ->where('carts.id',$request->get('id'))
             ->join('products','carts.product_id','=','products.id')
+            ->join('prices','products.id','=','prices.product_id')
             ->select(
                 'carts.*',
                 'products.thumbnail',
+                'prices.currency',
             )
             ->first();
 
