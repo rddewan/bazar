@@ -68,7 +68,7 @@ class CartController extends Controller
             );
 
         $data = DB::table('carts')
-            ->where('id',$request->get('id'))
+            ->where('carts.id',$request->get('id'))
             ->join('products','carts.product_id','=','products.id')
             ->select(
                 'carts.*',
