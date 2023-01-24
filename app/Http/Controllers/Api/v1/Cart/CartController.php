@@ -82,11 +82,11 @@ class CartController extends Controller
                 ->where('id',$cart->id)
                 ->update(
                     [
-                        'qty' => $request->get('qty'),
+                        'qty' => $request->get('qty') + $cart->qty,
                         'price' => $request->get('price'),
                         'discounted_price' => $request->get('discounted_price'),
                         'discount' => $request->get('discount'),
-                        'line_amount' => $request->get('line_amount'),
+                        'line_amount' => $request->get('price') * ($request->get('qty') + $cart->qty)
                     ]
                 );
 
