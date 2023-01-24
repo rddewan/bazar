@@ -78,6 +78,14 @@ class CartController extends Controller
         }
         else {
             // update cart
+            $lineAmount = 0.0;
+            $discount = $request->get('discount');
+            if ($discount > 0) {
+                $lineAmount =  $request->get('discounted_price') * ($request->get('qty') + $cart->qty);
+            }
+            else  {
+                $lineAmount = $request->get('price') * ($request->get('qty') + $cart->qty);
+            }
             DB::table('carts')
                 ->where('id',$cart->id)
                 ->update(
@@ -86,7 +94,7 @@ class CartController extends Controller
                         'price' => $request->get('price'),
                         'discounted_price' => $request->get('discounted_price'),
                         'discount' => $request->get('discount'),
-                        'line_amount' => $request->get('price') * ($request->get('qty') + $cart->qty)
+                        'line_amount' => $lineAmount
                     ]
                 );
 
