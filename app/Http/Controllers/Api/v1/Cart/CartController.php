@@ -154,6 +154,10 @@ class CartController extends Controller
 
     function  delete(Request $request): JsonResponse
     {
+        $cart = DB::table('carts')
+            ->where('id',$request->get('id'))
+            ->first();
+
         $result = false;
 
         $data = DB::table('carts')
@@ -165,7 +169,7 @@ class CartController extends Controller
         }
 
         $cartTotal = DB::table('carts')
-            ->where('user_id',$data->user_id)
+            ->where('user_id',$cart->user_id)
             ->sum('carts.line_amount');
 
         return Response::json([
