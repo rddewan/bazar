@@ -164,6 +164,13 @@ class CartController extends Controller
             $result = true;
         }
 
-        return Response::json(['deleted' => $result], ResponseAlias::HTTP_OK);
+        $cartTotal = DB::table('carts')
+            ->where('user_id',$data->user_id)
+            ->sum('carts.line_amount');
+
+        return Response::json([
+            'deleted' => $result,
+            'cartTotal' => (double)$cartTotal
+        ], ResponseAlias::HTTP_OK);
     }
 }
