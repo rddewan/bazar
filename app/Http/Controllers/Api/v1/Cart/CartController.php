@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Response;
+use PhpParser\Node\Expr\Cast\Double;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class CartController extends Controller
@@ -25,36 +26,94 @@ class CartController extends Controller
             )
             ->get();
 
+        $cartTotal = DB::table('carts')
+            ->where('user_id',$id)
+            ->sum('carts.line_amount');
 
-        return Response::json($data, ResponseAlias::HTTP_OK);
+
+        return Response::json([
+            'data' => $data,
+            'cartTotal' => (double)$cartTotal,
+        ], ResponseAlias::HTTP_OK);
     }
 
     function  addToCart(Request $request): JsonResponse
     {
-        $id = DB::table('carts')->insertGetId([
-            'user_id' => $request->get('user_id'),
-            'product_id' => $request->get('product_id'),
-            'product_name' => $request->get('product_name'),
-            'short_description' => $request->get('short_description'),
-            'qty' => $request->get('qty'),
-            'price' => $request->get('price'),
-            'discounted_price' => $request->get('discounted_price'),
-            'discount' => $request->get('discount'),
-            'line_amount' => $request->get('line_amount'),
-        ]);
-
-        $data = DB::table('carts')
-            ->where('carts.id',$id)
-            ->join('products','carts.product_id','=','products.id')
-            ->join('prices','products.id','=','prices.product_id')
-            ->select(
-                'carts.*',
-                'products.thumbnail',
-                'prices.currency',
-            )
+        $cart = DB::table('carts')
+            ->where('product_id',$request->get('product_id'))
             ->first();
 
-        return Response::json($data, ResponseAlias::HTTP_CREATED);
+        if(empty($cart)) {
+            $id = DB::table('carts')->insertGetId([
+                'user_id' => $request->get('user_id'),
+                'product_id' => $request->get('product_id'),
+                'product_name' => $request->get('product_name'),
+                'short_description' => $request->get('short_description'),
+                'qty' => $request->get('qty'),
+                'price' => $request->get('price'),
+                'discounted_price' => $request->get('discounted_price'),
+                'discount' => $request->get('discount'),
+                'line_amount' => $request->get('line_amount'),
+            ]);
+
+            $data = DB::table('carts')
+                ->where('carts.id',$id)
+                ->join('products','carts.product_id','=','products.id')
+                ->join('prices','products.id','=','prices.product_id')
+                ->select(
+                    'carts.*',
+                    'products.thumbnail',
+                    'prices.currency',
+                )
+                ->first();
+
+            $cartTotal = DB::table('carts')
+                ->where('user_id',$data->user_id)
+                ->sum('carts.line_amount');
+
+            return Response::json([
+                'data' => $data,
+                'cartTotal' => (double)$cartTotal,
+            ], ResponseAlias::HTTP_CREATED);
+        }
+        else {
+            // update cart
+            DB::table('carts')
+                ->where('id',$cart->id)
+                ->update(
+                    [
+                        'qty' => $request->get('qty'),
+                        'price' => $request->get('price'),
+                        'discounted_price' => $request->get('discounted_price'),
+                        'discount' => $request->get('discount'),
+                        'line_amount' => $request->get('line_amount'),
+                    ]
+                );
+
+            // select cart
+            $data = DB::table('carts')
+                ->where('carts.id',$cart->id)
+                ->join('products','carts.product_id','=','products.id')
+                ->join('prices','products.id','=','prices.product_id')
+                ->select(
+                    'carts.*',
+                    'products.thumbnail',
+                    'prices.currency',
+                )
+                ->first();
+
+            // sum line amount total
+            $cartTotal = DB::table('carts')
+                ->where('user_id',$data->user_id)
+                ->sum('carts.line_amount');
+
+            return Response::json([
+                'data' => $data,
+                'cartTotal' => (double)$cartTotal,
+            ], ResponseAlias::HTTP_OK);
+
+        }
+
     }
 
     function  update(Request $request): JsonResponse
@@ -82,7 +141,15 @@ class CartController extends Controller
             )
             ->first();
 
-        return Response::json($data, ResponseAlias::HTTP_OK);
+        $cartTotal = DB::table('carts')
+            ->where('user_id',$data->user_id)
+            ->sum('carts.line_amount');
+
+        return Response::json([
+            'data' => $data,
+            'cartTotal' => (double)$cartTotal,
+        ], ResponseAlias::HTTP_OK);
+
     }
 
     function  delete(Request $request): JsonResponse
