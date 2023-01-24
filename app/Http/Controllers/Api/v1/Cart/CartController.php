@@ -79,8 +79,8 @@ class CartController extends Controller
         else {
             // update cart
             $lineAmount = 0.0;
-            $discount = $request->get('discount');
-            if ($discount > 0) {
+            $discount = (double) $request->get('discount');
+            if ($discount > 0.0) {
                 $lineAmount =  $request->get('discounted_price') * ($request->get('qty') + $cart->qty);
             }
             else  {
