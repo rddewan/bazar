@@ -77,7 +77,7 @@ class CartController extends Controller
                 ->sum('carts.line_amount');
 
             $badgeCount = DB::table('carts')
-                ->where('user_id',$id)
+                ->where('user_id',$data->user_id)
                 ->count('id');
 
             return Response::json([
