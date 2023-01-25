@@ -30,10 +30,15 @@ class CartController extends Controller
             ->where('user_id',$id)
             ->sum('carts.line_amount');
 
+        $badgeCount = DB::table('carts')
+            ->where('user_id',$id)
+            ->count('id');
+
 
         return Response::json([
             'data' => $data,
             'cartTotal' => (double)$cartTotal,
+            'badgeCount' => $badgeCount,
         ], ResponseAlias::HTTP_OK);
     }
 
@@ -71,9 +76,14 @@ class CartController extends Controller
                 ->where('user_id',$data->user_id)
                 ->sum('carts.line_amount');
 
+            $badgeCount = DB::table('carts')
+                ->where('user_id',$id)
+                ->count('id');
+
             return Response::json([
                 'data' => $data,
                 'cartTotal' => (double)$cartTotal,
+                'badgeCount' => $badgeCount,
             ], ResponseAlias::HTTP_CREATED);
         }
         else {
@@ -115,9 +125,15 @@ class CartController extends Controller
                 ->where('user_id',$data->user_id)
                 ->sum('carts.line_amount');
 
+            $badgeCount = DB::table('carts')
+                ->where('user_id',$data->user_id)
+                ->count('id');
+
+
             return Response::json([
                 'data' => $data,
                 'cartTotal' => (double)$cartTotal,
+                'badgeCount' => $badgeCount,
             ], ResponseAlias::HTTP_OK);
 
         }
@@ -153,9 +169,14 @@ class CartController extends Controller
             ->where('user_id',$data->user_id)
             ->sum('carts.line_amount');
 
+        $badgeCount = DB::table('carts')
+            ->where('user_id',$data->user_id)
+            ->count('id');
+
         return Response::json([
             'data' => $data,
             'cartTotal' => (double)$cartTotal,
+            'badgeCount' => $badgeCount,
         ], ResponseAlias::HTTP_OK);
 
     }
@@ -180,9 +201,14 @@ class CartController extends Controller
             ->where('user_id',$cart->user_id)
             ->sum('carts.line_amount');
 
+        $badgeCount = DB::table('carts')
+            ->where('user_id',$cart->user_id)
+            ->count('id');
+
         return Response::json([
             'deleted' => $result,
-            'cartTotal' => (double)$cartTotal
+            'cartTotal' => (double)$cartTotal,
+            'badgeCount' => $badgeCount,
         ], ResponseAlias::HTTP_OK);
     }
 }
