@@ -183,11 +183,12 @@ class CartController extends Controller
 
     function  delete(Request $request): JsonResponse
     {
+        $result = false;
+
         $cart = DB::table('carts')
             ->where('id',$request->get('id'))
             ->first();
 
-        $result = false;
 
         $data = DB::table('carts')
             ->where('id',$request->get('id'))
@@ -210,5 +211,26 @@ class CartController extends Controller
             'cartTotal' => (double)$cartTotal,
             'badgeCount' => $badgeCount,
         ], ResponseAlias::HTTP_OK);
+    }
+
+    function checkout(Request $request): JsonResponse
+    {
+
+        $result = false;
+
+        $data = DB::table('carts')
+            ->where('user_id',$request->get('user_id'))
+            ->delete();
+
+        if ($data != 0) {
+            $result = true;
+        }
+
+        return Response::json([
+            'checkout' => $result,
+
+        ], ResponseAlias::HTTP_OK);
+
+
     }
 }

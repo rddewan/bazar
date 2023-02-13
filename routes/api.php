@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\v1\Cart\CartController;
 use App\Http\Controllers\Api\v1\Category\CategoryController;
 use App\Http\Controllers\Api\v1\Product\FeaturedProductController;
 use App\Http\Controllers\Api\v1\Product\ProductController;
+use App\Http\Controllers\Api\v1\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,15 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::post('register',[SignUpController::class,'register']);
     Route::post('login',[LoginController::class,'login']);
+
+    Route::group(['prefix'=>'user'], function () {
+        Route::group(['middleware' => 'auth:api'], function () {
+            Route::get('getUser/{id}', [UserController::class, 'getUser']);
+            Route::post('delete', [UserController::class, 'delete']);
+        });
+    });
+
+
 
     Route::group(['prefix' => 'product'], function () {
         Route::get('getProducts',[ProductController::class,'getProducts']);
@@ -56,7 +66,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('addToCart',[CartController::class,'addToCart']);
         Route::put('update',[CartController::class,'update']);
         Route::delete('delete',[CartController::class,'delete']);
+        Route::delete('checkout',[CartController::class,'checkout']);
     });
+
+
 });
 
 
