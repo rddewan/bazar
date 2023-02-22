@@ -66,7 +66,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('addToCart',[CartController::class,'addToCart']);
         Route::put('update',[CartController::class,'update']);
         Route::delete('delete',[CartController::class,'delete']);
-        Route::delete('checkout',[CartController::class,'checkout']);
+        Route::post('checkout',[CartController::class,'checkout']);
     });
 
 
