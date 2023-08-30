@@ -20,7 +20,7 @@ class FeaturedProductController extends Controller
             ->join('inventories','products.id','=','inventories.product_id')
             ->join('categories','products.category_id','=','categories.id')
             ->join('brands','products.brand_id','=','brands.id')
-            ->orderBy('products.id')
+            ->orderBy('products.name','DESC')
             ->select(
                 'products.*',
                 'prices.price','prices.discount','prices.currency',
