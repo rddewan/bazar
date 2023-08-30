@@ -18,6 +18,7 @@ class ProductController extends Controller
 
         $perPage = $request->get('perPage');
         $pageNumber = $request->get('pageNumber');
+        $query = $request->get('search');
 
         if ($perPage == null || $pageNumber == null)  {
             return Response::json(
@@ -26,6 +27,29 @@ class ProductController extends Controller
             );
         }
 
+        // search using laravel scout
+        if ($query) {
+            $results = Product::search($query)
+                ->query(function ($query) {
+                    $query->join('prices','products.id','=','prices.product_id')
+                        ->join('inventories','products.id','=','inventories.product_id')
+                        ->join('categories','products.category_id','=','categories.id')
+                        ->join('brands','products.brand_id','=','brands.id')
+                        ->orderBy('products.id')
+                        ->select(
+                            'products.*',
+                            'prices.price','prices.discount','prices.currency',
+                            'inventories.qty',
+                            'brands.name AS brand',
+                            'categories.name AS category',
+                        );
+                    })
+                ->paginate($perPage,'product',$pageNumber);
+
+            return Response::json($results, ResponseAlias::HTTP_OK);
+        }
+
+        // result without search
         $result = DB::table('products')
             ->join('prices','products.id','=','prices.product_id')
             ->join('inventories','products.id','=','inventories.product_id')
